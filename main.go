@@ -9,28 +9,28 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var ctx = context.Background()
+var app, _ = firebase.NewApp(ctx, nil)
+var client, _ = app.Auth(ctx)
+
 func validateToken(c *gin.Context) {
 
-        ctx := context.Background()
-        app, err := firebase.NewApp(ctx, nil)
-        if err != nil {
-                log.Fatalf("error initializing app: %v\n", err)
-        }
-
-	client, err := app.Auth(ctx)
-	if err != nil {
-		log.Fatalf("error getting Auth client: %v\n", err)
-	}
-
         idToken := extractToken(c)
-        
+
 	token, err := client.VerifyIDToken(ctx, idToken)
 	if err != nil {
-		log.Fatalf("error verifying ID token: %v\n", err)
+                log.Printf("error verifying ID token: %v\n", err)
+
+                c.JSON(400, gin.H{
+                "status": "Failed",
+                "message": "Failed to verify User ID",
+                "error": err.Error(),
+                })
+
+                return
 	}
 
         log.Printf("Verified ID token: %v\n", token)
-        
 	c.JSON(200, gin.H{
           "X-Hasura-User-Id": token.UID,
           "X-Hasura-Role": "user",
@@ -67,7 +67,7 @@ func signUp(c *gin.Context) {
         u, err := client.CreateUser(ctx, params)
         if err != nil {
                 log.Printf("error creating user: %v\n", err)
-                c.JSON(200, gin.H{
+                c.JSON(400, gin.H{
                 "status": "Failed",
                 "message": "Failed to create new user",
                 "error": err.Error(),
