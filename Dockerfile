@@ -9,4 +9,5 @@ FROM alpine:latest
 RUN apk --no-cache add ca-certificates
 WORKDIR /root/
 COPY --from=builder /go/src/github.com/sdil/hasura-firebase-auth-webhook/ .
+ENV GOOGLE_APPLICATION_CREDENTIALS="/root/service-account.json"
 CMD ["./app"]
