@@ -1,5 +1,7 @@
 # Hasura Firebase Auth Webhook
 
+![Go](https://github.com/sdil/hasura-firebase-auth-webhook/workflows/Go/badge.svg)
+
 This project is highly inspired by [Hasura NodeJS auth webhook boilerplate](https://github.com/hasura/graphql-engine/blob/master/community/boilerplates/auth-webhooks/nodejs-firebase/firebase/firebaseHandler.js).
 
 This webhook will verify the token.
