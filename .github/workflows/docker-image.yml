@@ -15,13 +15,12 @@ jobs:
     steps:
     - name: Push to GitHub Packages
       id: docker_build
-      uses: docker/build-push-action@v1
+      uses: docker/build-push-action@v2
       with:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: docker.pkg.github.com
-        repository: sdil/hasura-firebase-auth-webhook/hasura-firebase-auth-webhook
-        tag_with_ref: true
+        tags: sdil/hasura-firebase-auth-webhook:latest
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
 
