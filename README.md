@@ -11,6 +11,8 @@ This webhook will verify the token.
 - [How Hasura authentication works](#How-Hasura-authentication-works)
 - [How Hasura Firebase Auth webhook helps](#How-Hasura-Firebase-Auth-webhook-helps)
 - [How to use this](#How-to-use-this)
+    - [Docker-compose](#Docker-compose-environment)
+    - [Host Installation](#Host-Installation)
 
 ## How Hasura authentication works
 
@@ -28,19 +30,44 @@ This Firebase Auth is intended to work with Webhook
 
 ## How Hasura Firebase Auth webhook helps
 
-If the user is authenticated, the webhook will return the following result to the Hasura server:
+If the user is sucessfully authenticated, the webhook will return the following result to the Hasura server:
 ```
+$ curl -i localhost:8081 -H "Authorization: Bearer <Firebase token>"
+
 HTTP 200 OK
+Content-Type: application/json
 Cache-Control: 300
 {
-	"X-Hasura-User-Id": <Firebase UID>,
-	"X-Hasura-Role":    "user",
+    "X-Hasura-User-Id": <Firebase UID>,
+    "X-Hasura-Role":    "user",
 }
 ```
 
 ## How to use this
 
-```shell
-$ docker run -it ghcr.io/sdil/hasura-firebase-auth-webhook:latest
-```
+### Docker-compose environment
 
+1. Launch the webhook container:
+
+    ```shell
+    $ docker-compose up
+    ```
+
+2. Test the webhook server
+
+### Host Installation
+
+1. Download and launch the webhook server
+
+    ```shell
+    $ export GOOGLE_APPLICATION_CREDENTIALS="<path to service-account.json file>"
+    $ curl -o <file to download> | sh
+    ```
+
+2. Start the Hasura GraphQL engine and point the authentication webhook to the hasura-firebase-auth webhook server
+
+    ```shell
+    graphql-engine --database-url <DB URL> serve --admin-secret <ADMIN_SECRET_KEY> --auth-hook localhost:8081
+    ```
+
+3. Test the GraphQL operation
