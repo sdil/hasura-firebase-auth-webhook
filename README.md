@@ -6,6 +6,12 @@ This project is highly inspired by [Hasura NodeJS auth webhook boilerplate](http
 
 This webhook will verify the token.
 
+## Table of Contents
+
+- [How Hasura authentication works](#How-Hasura-authentication-works)
+- [How Hasura Firebase Auth webhook helps](#How-Hasura-Firebase-Auth-webhook-helps)
+- [How to use this](#How-to-use-this)
+
 ## How Hasura authentication works
 
 Generally, Hasura has 3 modes to authenticate users:
@@ -22,8 +28,19 @@ This Firebase Auth is intended to work with Webhook
 
 ## How Hasura Firebase Auth webhook helps
 
+If the user is authenticated, the webhook will return the following result to the Hasura server:
+```
+HTTP 200 OK
+Cache-Control: 300
+{
+	"X-Hasura-User-Id": <Firebase UID>,
+	"X-Hasura-Role":    "user",
+}
+```
+
 ## How to use this
 
 ```shell
-$ docker run -it ghcr.io/sdil/hasura-firebase-auth
+$ docker run -it ghcr.io/sdil/hasura-firebase-auth-webhook:latest
 ```
+

@@ -4,4 +4,4 @@ build:
 	docker build -t $(APP) .
 
 run: build
-	docker run -it -v $(shell pwd)/service-account.json:/root/service-account.json -p 8080:8080 $(APP)
+	docker run -it -e CACHE_DURATION=300 -v $(shell pwd)/service-account.json:/root/service-account.json -p 8080:8080 $(APP)

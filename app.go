@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"os"
 
 	"firebase.google.com/go"
 	"github.com/gin-gonic/gin"
@@ -14,32 +15,41 @@ var client, _ = app.Auth(ctx)
 
 func validateToken(c *gin.Context) {
 
-        idToken := extractToken(c)
+	idToken, err := extractToken(c)
+	if err != nil {
+		log.Printf("Failed to extract token from Header: %v\n", err)
+		c.JSON(400, gin.H{
+			"status":  "Failed",
+			"message": "Failed to extract token from Header",
+			"error":   err.Error(),
+		})
+		return
+	}
 
 	token, err := client.VerifyIDToken(ctx, idToken)
 	if err != nil {
-                log.Printf("error verifying ID token: %v\n", err)
-
-                c.JSON(400, gin.H{
-                "status": "Failed",
-                "message": "Failed to verify User ID",
-                "error": err.Error(),
-                })
-
-                return
+		log.Printf("error verifying ID token: %v\n", err)
+		c.JSON(400, gin.H{
+			"status":  "Failed",
+			"message": "Failed to verify User ID",
+			"error":   err.Error(),
+		})
+		return
 	}
 
-        log.Printf("Verified ID token: %v\n", token)
+	log.Printf("Verified ID token: %v\n", token)
+
+	c.Header("Cache-Control", os.Getenv("CACHE_DURATION"))
 	c.JSON(200, gin.H{
-          "X-Hasura-User-Id": token.UID,
-          "X-Hasura-Role": "user",
-        })
+		"X-Hasura-User-Id": token.UID,
+		"X-Hasura-Role":    "user",
+	})
 }
 
-func extractToken(c *gin.Context) string {
-        authHeader := c.Request.Header["Authorization"][0]
-        log.Printf("ID token: %v\n", authHeader)
-        return authHeader
+func extractToken(c *gin.Context) (string, error) {
+	authHeader := c.Request.Header["Authorization"][0]
+	log.Printf("ID token: %v\n", authHeader)
+	return authHeader, nil
 }
 
 func main() {
