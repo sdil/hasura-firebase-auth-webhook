@@ -30,7 +30,7 @@ This Firebase Auth is intended to work with Webhook
 
 ## How Hasura Firebase Auth webhook helps
 
-If the user is sucessfully authenticated, the webhook will return the following result to the Hasura server:
+If the user is successfully authenticated, the webhook will return the following result to the Hasura server:
 ```
 $ curl -i localhost:8081 -H "Authorization: Bearer <Firebase token>"
 
@@ -50,7 +50,8 @@ Cache-Control: 300
 1. Launch the webhook container:
 
     ```shell
-    $ docker-compose up
+    $ curl -o <docker compose manifest> -o docker-compose.yaml
+    $ docker-compose up -d
     ```
 
 2. Test the webhook server

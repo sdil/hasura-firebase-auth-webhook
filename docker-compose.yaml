@@ -1,0 +1,35 @@
+version: '3.6'
+services:
+  postgres:
+    image: postgres:12
+    restart: always
+    volumes:
+    - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgrespassword
+  hasura-firebase-auth-webhook:
+    image: ghcr.io/sdil/hasura-firebase-auth-webhook:latest
+    restart: always
+    ports:
+    - "8081:8081"
+    volumes:
+    - ./service-account.json:/root/service-account.json
+  graphql-engine:
+    image: hasura/graphql-engine:v1.3.2
+    ports:
+    - "8080:8080"
+    depends_on:
+    - "postgres"
+    restart: always
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
+      ## enable the console served by server
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
+      ## enable debugging mode. It is recommended to disable this in production
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      ## Set a secure admin secret
+      HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+      HASURA_GRAPHQL_AUTH_HOOK: hasura-firebase-auth-webhook:8081
+volumes:
+  db_data:
