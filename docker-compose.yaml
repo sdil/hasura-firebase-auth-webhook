@@ -30,6 +30,6 @@ services:
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       ## Set a secure admin secret
       HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
-      HASURA_GRAPHQL_AUTH_HOOK: hasura-firebase-auth-webhook:8081
+      HASURA_GRAPHQL_AUTH_HOOK: http://hasura-firebase-auth-webhook:8081/auth
 volumes:
   db_data:

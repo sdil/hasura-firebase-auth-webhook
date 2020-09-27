@@ -43,7 +43,7 @@ Cache-Control: 300
 }
 ```
 
-## How to use this
+## Installation
 
 ### Docker-compose environment
 
@@ -72,3 +72,10 @@ Cache-Control: 300
     ```
 
 3. Test the GraphQL operation
+
+## Roadmap
+
+- Write a comprehensive unit tests
+- Perform a benchmark & performance test
+- Handle exceptions
+- Add Kubernetes manifest example
