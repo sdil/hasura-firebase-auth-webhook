@@ -73,9 +73,11 @@ Cache-Control: 300
 
 3. Test the GraphQL operation
 
-## Roadmap
+## Roadmap - v1 Stable Release
 
 - Write a comprehensive unit tests
 - Perform a benchmark & performance test
 - Handle exceptions
 - Add Kubernetes manifest example
+- Write manifests for Kubernetes and Heroku deployment script to ease the adoption
+
