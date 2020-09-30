@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"os"
+	"strings"
 
 	"firebase.google.com/go"
 	"github.com/gin-gonic/gin"
@@ -48,8 +49,10 @@ func validateToken(c *gin.Context) {
 
 func extractToken(c *gin.Context) (string, error) {
 	authHeader := c.Request.Header["Authorization"][0]
-	log.Printf("ID token: %v\n", authHeader)
-	return authHeader, nil
+	splitToken := strings.Split(authHeader, "Bearer ")
+	token := splitToken[1]
+	log.Printf("ID token: %v\n", token)
+	return token, nil
 }
 
 func main() {
