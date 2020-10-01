@@ -45,17 +45,6 @@ Cache-Control: 300
 
 ## Installation
 
-### Docker-compose environment
-
-1. Launch the webhook container:
-
-    ```shell
-    $ curl -o <docker compose manifest> -o docker-compose.yaml
-    $ docker-compose up -d
-    ```
-
-2. Test the webhook server
-
 ### Host Installation
 
 1. Download and launch the webhook server
@@ -71,7 +60,26 @@ Cache-Control: 300
     graphql-engine --database-url <DB URL> serve --admin-secret <ADMIN_SECRET_KEY> --auth-hook localhost:8081
     ```
 
+### Docker-compose environment
+
+1. Launch the webhook container:
+
+    ```shell
+    $ curl https://raw.githubusercontent.com/sdil/hasura-firebase-auth-webhook/master/example/docker-compose/docker-compose.yaml -o docker-compose.yaml
+    $ docker-compose up -d
+    ```
+
+2. Test the webhook server
+
 3. Test the GraphQL operation
+
+### Kubernetes
+
+1. Launch the Kubernetes resources:
+
+    ```shell
+    $ kubectl create -f https://raw.githubusercontent.com/sdil/hasura-firebase-auth-webhook/master/example/kubernetes/kubernetes.yaml
+    ```
 
 ## Roadmap - v1 Stable Release
 
@@ -80,4 +88,3 @@ Cache-Control: 300
 - Handle exceptions
 - Add Kubernetes manifest example
 - Write manifests for Kubernetes and Heroku deployment script to ease the adoption
-
