@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"log"
 	"os"
 	"strings"
@@ -18,11 +19,9 @@ func validateToken(c *gin.Context) {
 
 	idToken, err := extractToken(c)
 	if err != nil {
-		log.Printf("Failed to extract token from Header: %v\n", err)
-		c.JSON(400, gin.H{
-			"status":  "Failed",
-			"message": "Failed to extract token from Header",
-			"error":   err.Error(),
+		c.Header("Cache-Control", os.Getenv("CACHE_DURATION"))
+		c.JSON(200, gin.H{
+			"X-Hasura-Role": "anonymous",
 		})
 		return
 	}
@@ -48,11 +47,15 @@ func validateToken(c *gin.Context) {
 }
 
 func extractToken(c *gin.Context) (string, error) {
-	authHeader := c.Request.Header["authorization"][0]
+	authHeader := c.Request.Header.Get("authorization")
 	splitToken := strings.Split(authHeader, "Bearer ")
-	token := splitToken[1]
-	log.Printf("ID token: %v\n", token)
-	return token, nil
+	if len(splitToken) == 2 {
+		token := splitToken[1]
+		log.Printf("ID token: %v\n", token)
+		return token, nil
+	}
+	log.Printf("Invalid auth header is given")
+	return "", errors.New("Invalid token given")
 }
 
 func main() {
