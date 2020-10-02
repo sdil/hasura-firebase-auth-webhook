@@ -48,7 +48,7 @@ func validateToken(c *gin.Context) {
 }
 
 func extractToken(c *gin.Context) (string, error) {
-	authHeader := c.Request.Header["Authorization"][0]
+	authHeader := c.Request.Header["authorization"][0]
 	splitToken := strings.Split(authHeader, "Bearer ")
 	token := splitToken[1]
 	log.Printf("ID token: %v\n", token)
