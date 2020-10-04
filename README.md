@@ -88,3 +88,9 @@ Cache-Control: 300
 - Handle exceptions
 - Add Kubernetes manifest example
 - Write manifests for Kubernetes and Heroku deployment script to ease the adoption
+
+## FAQ
+
+**I got this error ....**
+
+You're not mounting the service-account.json file in the container.
