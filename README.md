@@ -88,6 +88,7 @@ Cache-Control: 300
 - Handle exceptions
 - Add Kubernetes manifest example
 - Write manifests for Kubernetes and Heroku deployment script to ease the adoption
+- Cache the request so that it doesn't stress Firebase auth too much
 
 ## FAQ
 
