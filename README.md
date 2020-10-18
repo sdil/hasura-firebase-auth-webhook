@@ -89,6 +89,7 @@ Cache-Control: 300
 - Add Kubernetes manifest example
 - Write manifests for Kubernetes and Heroku deployment script to ease the adoption
 - Cache the request so that it doesn't stress Firebase auth too much
+- Query Hasura (with admin secret) to get the user's role from database
 
 ## FAQ
 
